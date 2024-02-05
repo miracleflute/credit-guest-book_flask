@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Display Names</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: black;
+            overflow: hidden; /* 페이지 스크롤 숨기기 */
+        }
+
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1; /* 다른 요소 위에 배치하기 위해 */
+        }
+
+        .credits {
+            font-size: 24px;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            max-height: 2000cm;
+            animation: creditsScroll 30s linear infinite;
+        }
+
+        @keyframes creditsScroll {
+            0% { transform: translateY(100%); }
+            100% { transform: translateY(-100%); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 비디오 배경 추가 -->
+    <video class="video-background" autoplay muted loop>
+        <source src="{{ url_for('static', filename='videos/background_video.mp4') }}" type="video/mp4">
+        <!-- 다른 브라우저 지원을 위한 추가 포맷도 추가할 수 있습니다. -->
+        <!-- <source src="your-video.mp4" type="video/mp4"> -->
+    </video>
+    
+    <div class="credits" id="name-list">
+        <!-- 이름 목록이 여기에 추가됩니다 -->
+        
+    </div>
+    
+
+    <script>
+        const eventSource = new EventSource('/main/events');
+        const nameList = document.getElementById('name-list');
+        const credits = document.querySelector('.credits');
+    
+        console.log(credits.style.fontSize)
+        
+        // 서버로부터 설정 값을 받아오는 함수
+        function getSettings() {
+            fetch('/main/get_settings') // 엔드포인트 경로를 맞춰야 합니다.
+                .then((response) => response.json())
+                .then((settings) => {
+                    credits.style.fontSize = `${settings.font_size}px`;
+                    credits.style.animationDuration = `${settings.animation_duration}s`;
+                    maxLength = settings.max_length; // max_length를 설정 값으로 업데이트
+                })
+                .catch((error) => console.error('Error fetching settings:', error));
+        }
+    
+        // 초기 설정 값을 가져오기 위해 페이지 로딩 시 한 번 호출
+        getSettings();
+    
+        eventSource.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            const nameItem = document.createElement('p');
+            nameItem.textContent = data.name;
+    
+            if (nameList.children.length >= maxLength) {
+                nameList.removeChild(nameList.children[0]);
+            }
+            console.log(maxLength)
+    
+            nameList.appendChild(nameItem);
+    
+            setTimeout(() => {
+                nameItem.classList.remove('creditsScroll');
+                void nameItem.offsetWidth;
+                nameItem.classList.add('creditsScroll');
+            }, 10);
+        };
+    </script>
+    
+    
+    
+
+</body>
+</html>

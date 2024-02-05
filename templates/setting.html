@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Settings</title>
+</head>
+<body>
+    <h1>Display Settings</h1>
+    <form method="POST">
+        <label for="font-size">Font Size:</label>
+        <input type="number" id="font-size" name="font-size" value="{{ font_size }}">
+        
+        <label for="animation-duration">Animation Duration (s):</label>
+        <input type="number" id="animation-duration" name="animation-duration" value="{{ animation_duration }}">
+
+        <label for="max-length">Max Length :</label>
+        <input type="number" id="max-length" name="max-length" value="{{ max_length }}">
+        
+        <button type="submit">Save</button>
+    </form>
+    
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiosk</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+
+            background-image: url("{{ url_for('static', filename='images/background_sample6.png') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            /*background-color: rgba(255, 255, 255, 0.6); 투명도 60% (0.6)를 지정 */
+        }
+
+        .container {
+            display: flex;
+            width: 80%; /* 전체 width의 80%를 차지하도록 조정 */
+            margin: 0 auto;
+        }
+
+        .form-container {
+            width: 40%; /* 전체 width의 40%를 차지하도록 조정 */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            padding-top: 30%;
+        }
+
+        label {
+            margin-bottom: 10px;
+        }
+
+        input {
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .image-container {
+            width: 60%; /* 전체 width의 60%를 차지하도록 조정 */
+        }
+
+        .image-container img {
+            width: 60%; /* 이미지의 너비를 80%로 조정 */
+            height: auto; /* 자동으로 높이를 조정하여 가로 세로 비율 유지 */
+            padding-left: 20%;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-container">
+            <form method="POST" action="{{ url_for('main.kiosk') }}">
+                <label for="name" style="font-size: 20px; font-weight: 600;">이름 입력</label>
+                <input type="text" id="name" name="name" required>
+                <button type="submit">방명록 등록하기</button>
+                
+            </form>
+        </div>
+        <div class="image-container">
+            
+            <img src="{{ url_for('static', filename='images/sample3.png') }}" alt="Image style ="" ">
+        </div>
+    </div>
+
+
+</body>
+</html>
